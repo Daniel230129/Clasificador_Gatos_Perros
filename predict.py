@@ -6,7 +6,6 @@ import tensorflow as tf
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 
-# Desactivar advertencias innecesarias de TensorFlow
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
 
 def main():
@@ -29,18 +28,16 @@ def main():
         print(f"Error al cargar el modelo: {e}")
         return
 
-    # Tamaño exacto con el que se entrenó el modelo original
     TARGET_SIZE = (224, 224) 
     
     print(f"Procesando la imagen {args.image}...")
     img = image.load_img(args.image, target_size=TARGET_SIZE)
     img_array = image.img_to_array(img)
     
-    # Expandir dimensiones (1, 224, 224, 3)
     img_batch = np.expand_dims(img_array, axis=0)
 
     print("Realizando predicción...")
-    # verbose=0 oculta la barra de progreso en la terminal para una salida más limpia
+
     prediccion = model.predict(img_batch, verbose=0)
     
     clases = ["Gato", "Perro"]
@@ -48,13 +45,11 @@ def main():
     clase_predicha = clases[indice_ganador]
     confianza = prediccion[0][indice_ganador] * 100
 
-    # Salida requerida por la tarea
     print("\n" + "="*40)
     print(f" CLASE PREDICHA: {clase_predicha}")
     print(f" CONFIANZA:      {confianza:.2f}%")
     print("="*40 + "\n")
 
-    # Visualización requerida por la tarea
     plt.figure(figsize=(6, 6))
     plt.imshow(img)
     plt.axis('off')
